@@ -60,6 +60,12 @@ class Resque::DelayedQueueTest < Test::Unit::TestCase
     assert_equal(2, Resque.redis.llen("delayed:#{timestamp.to_i}"), "should have 2 items in the timestamp queue")
   end
 
+  def test_enqueue_at_runs_after_enqueue_hook
+    JobWithAfterEnqueueHook.expects(:after_enqueue).with("path")
+    timestamp = Time.now + 60
+    Resque.enqueue_at(timestamp, JobWithAfterEnqueueHook, "path")
+  end
+
   def test_empty_delayed_queue_peek
     assert_equal([], Resque.delayed_queue_peek(0,20))
   end

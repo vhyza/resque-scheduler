@@ -76,3 +76,8 @@ end
 class SomeIvarJob < SomeJob
   @queue = :ivar
 end
+
+class JobWithAfterEnqueueHook
+  def after_enqueue(*args)
+  end
+end

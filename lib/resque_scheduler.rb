@@ -40,6 +40,7 @@ module ResqueScheduler
   # sit in the schedule list.
   def enqueue_at(timestamp, klass, *args)
     delayed_push(timestamp, job_to_hash(klass, args))
+    klass.after_enqueue(*args) if klass.respond_to?(:after_enqueue)
   end
 
   # Identical to enqueue_at but takes number_of_seconds_from_now
